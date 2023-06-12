@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCryptoValue } from '../context/CryptoProvider';
@@ -39,11 +39,11 @@ const CryptoDetails = () => {
     navigate('/');
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     getCoinData(coinId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coinId]);
-
+  console.log(coinData);
   return ReactDOM.createPortal(
     <div
       onClick={close}
