@@ -17,14 +17,21 @@ const CryptoProvider = ({ children }) => {
 
   const getCryptoData = async () => {
     setCryptoData([]);
-    setTotalPage(10000);
+    try {
+      const data = await fetch(`https://api.coingecko.com/api/v3/coins/list`)
+        .then((res) => res.json())
+        .then((json) => json);
+
+      setTotalPage(data.length);
+    } catch (err) {
+      console.log(err);
+    }
 
     try {
       const data = await fetch(
         `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&ids=${coinsSearch}&order=${sortBy}&per_page=${perPage}&page=${page}&sparkline=false&price_change_percentage=1h%2C24h%2C7d`
       )
         .then((res) => res.json())
-
         .then((json) => json);
 
       setCryptoData(data);
