@@ -43,7 +43,6 @@ const CryptoDetails = () => {
     getCoinData(coinId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coinId]);
-  console.log(coinData);
   return ReactDOM.createPortal(
     <div
       onClick={close}
