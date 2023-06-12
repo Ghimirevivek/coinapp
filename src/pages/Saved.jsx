@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { Link, Outlet } from 'react-router-dom';
 import { useStorage } from '../context/StorageContext';
@@ -7,22 +7,19 @@ import { useCryptoValue } from '../context/CryptoProvider';
 const SaveBtn = ({ data }) => {
   const { saveCoin, allCoins, removeCoin } = useStorage();
 
-  const handleClick = () => {
+  const handleClick = (e) => {
+    e.preventDefault();
     if (allCoins.includes(data.id)) {
       removeCoin(data.id);
     } else {
       saveCoin(data.id);
     }
   };
-  useEffect(() => {
-    handleClick();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <button
       className='outline-0 border-0 bg-none cursor-pointer'
-      onClick={handleClick}
+      onClick={(e) => handleClick(e)}
     >
       <svg
         className={`w-[1.5rem] ml-1.5 ${
@@ -48,13 +45,13 @@ const SaveBtn = ({ data }) => {
 };
 
 const Saved = () => {
-  const { storedData, resetStoredData } = useStorage();
+  const { savedData, resetStoredData } = useStorage();
   const { currency } = useCryptoValue();
 
   return (
     <section className='lg:w-[80%] w-[90%] h-full flex flex-col  mb-24 mt-16 relative'>
       <div className='w-full flex flex-col items-center  py-8 border border-gray-100 rounded min-h-[60vh] '>
-        {storedData ? (
+        {savedData ? (
           <table className='w-full table-auto'>
             <thead
               className='capitalize text-base text-gray-100 
@@ -73,8 +70,8 @@ const Saved = () => {
               </tr>
             </thead>
             <tbody>
-              {storedData &&
-                storedData.map((data) => (
+              {savedData &&
+                savedData.map((data) => (
                   <tr
                     key={data.id}
                     className='text-center text-base border-b border-gray-100 

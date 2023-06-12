@@ -9,7 +9,6 @@ const SaveBtn = ({ data }) => {
 
   const handleClick = (e) => {
     e.preventDefault();
-
     if (allCoins.includes(data.id)) {
       removeCoin(data.id);
     } else {

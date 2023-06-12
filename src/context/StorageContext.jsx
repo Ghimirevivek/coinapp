@@ -6,11 +6,14 @@ const StorageContext = createContext({});
 export const useStorage = () => useContext(StorageContext);
 
 const StorageProvider = ({ children }) => {
-  const [storedData, setStoredData] = useState();
+  const [savedData, setSavedData] = useState();
   const [allCoins, setAllCoins] = useState([]);
+
   const { currency, sortBy } = useCryptoValue();
+
   const saveCoin = (coinId) => {
     let oldCoins = JSON.parse(localStorage.getItem('coins'));
+
     if (oldCoins.includes(oldCoins)) {
       return null;
     } else {
@@ -19,12 +22,14 @@ const StorageProvider = ({ children }) => {
       localStorage.setItem('coins', JSON.stringify(newCoins));
     }
   };
+
   const removeCoin = (coinId) => {
     let oldCoins = JSON.parse(localStorage.getItem('coins'));
     let newCoins = oldCoins.filter((coin) => coin !== coinId);
     setAllCoins(newCoins);
     localStorage.setItem('coins', JSON.stringify(newCoins));
   };
+
   const getSavedData = async (totalCoins = allCoins) => {
     try {
       const data = await fetch(
@@ -35,7 +40,7 @@ const StorageProvider = ({ children }) => {
         .then((res) => res.json())
         .then((json) => json);
 
-      setStoredData(data);
+      setSavedData(data);
     } catch (err) {
       console.log(err);
     }
@@ -48,6 +53,7 @@ const StorageProvider = ({ children }) => {
     if (getLocalStorage) {
       let totalCoins = JSON.parse(localStorage.getItem('coins'));
       setAllCoins(totalCoins);
+
       if (totalCoins.length > 0) {
         getSavedData(totalCoins);
       }
@@ -61,13 +67,13 @@ const StorageProvider = ({ children }) => {
     if (allCoins.length > 0) {
       getSavedData(allCoins);
     } else {
-      setAllCoins([]);
+      setSavedData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allCoins.length]);
+  }, [allCoins]);
   return (
     <StorageContext.Provider
-      value={{ allCoins, saveCoin, removeCoin, resetStoredData, storedData }}
+      value={{ allCoins, saveCoin, removeCoin, resetStoredData, savedData }}
     >
       {children}
     </StorageContext.Provider>
